@@ -1,0 +1,120 @@
+{
+  "status": "success",
+  "summary": {
+    "totalAreas": 5,
+    "totalVehicles": 5,
+    "totalActivities": 15,
+    "totalRecords": 34
+  },
+  "cleaningReport": {
+    "missing_areas": 0,
+    "missing_vehicles": 0,
+    "missing_activities": 0,
+    "missing_waste": 0,
+    "duplicate_activities": 0,
+    "duplicate_waste": 0,
+    "invalid_population": 0,
+    "invalid_capacity": 0,
+    "invalid_quantity": 0
+  },
+  "descriptiveStats": {
+    "Biodegradable": {
+      "count": 10,
+      "mean": 1340.0,
+      "std": 562.14,
+      "min": 500.0,
+      "max": 2200.0
+    },
+    "Non-recyclable": {
+      "count": 9,
+      "mean": 536.67,
+      "std": 230.16,
+      "min": 250.0,
+      "max": 900.0
+    },
+    "Recyclable": {
+      "count": 10,
+      "mean": 785.0,
+      "std": 318.9,
+      "min": 350.0,
+      "max": 1300.0
+    },
+    "overall": {
+      "total_waste_kg": 26080.0,
+      "mean_per_collection": 2608.0,
+      "total_collections": 10
+    }
+  },
+  "charts": {
+    "areaWaste": {
+      "file": "chart_area_waste.png",
+      "data": {
+        "Central Park": 7400.0,
+        "Blue Ridge": 7000.0,
+        "Green Valley": 6580.0,
+        "Sunrise Colony": 4000.0,
+        "Palm Heights": 1100.0
+      }
+    },
+    "categoryPie": {
+      "file": "chart_category_pie.png",
+      "data": {
+        "Biodegradable": 13400.0,
+        "Non-recyclable": 4830.0,
+        "Recyclable": 7850.0
+      }
+    },
+    "vehicleUtil": {
+      "file": "chart_vehicle_util.png",
+      "data": {
+        "VEH003": 82.67,
+        "VEH005": 82.0,
+        "VEH001": 76.0,
+        "VEH002": 75.56,
+        "VEH004": 63.75
+      }
+    },
+    "statusDist": {
+      "file": "chart_status.png",
+      "data": {
+        "Completed": 10,
+        "In Progress": 2,
+        "Scheduled": 2,
+        "Cancelled": 1
+      }
+    },
+    "trend": {
+      "file": "chart_trend.png",
+      "data": {
+        "2026-10": 26080.0
+      }
+    },
+    "scatter": {
+      "file": "chart_scatter.png",
+      "data": {
+        "correlation": 0.856
+      }
+    },
+    "histogram": {
+      "file": "chart_histogram.png",
+      "data": {
+        "mean": 2608.0,
+        "std": 1113.44,
+        "min": 1100.0,
+        "max": 4300.0
+      }
+    }
+  },
+  "insights": [
+    "Highest recorded waste collection: Central Park (7,400 kg)",
+    "Lowest recorded waste collection: Palm Heights (1,100 kg)",
+    "Recorded waste per resident in Blue Ridge: 0.4667 kg/person",
+    "Recorded waste per resident in Central Park: 0.3524 kg/person",
+    "Recorded waste per resident in Green Valley: 0.5264 kg/person",
+    "Recorded waste per resident in Palm Heights: 0.1618 kg/person",
+    "Recorded waste per resident in Sunrise Colony: 0.4878 kg/person",
+    "Highest waste category: Biodegradable (51.4% of total recorded waste)",
+    "Highest vehicle utilization: VEH003 (82.7% avg utilization)",
+    "Collection completion rate: 71.4% (10/14 non-cancelled activities)"
+  ]
+}

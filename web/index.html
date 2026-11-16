@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project FAB — Waste Management System</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════ LOGIN PAGE ═══ -->
+<div id="page-login" class="page auth-page">
+  <div class="auth-container">
+    <div class="auth-logo">
+      <div class="auth-logo-icon">🌱</div>
+      <h1>Project FAB</h1>
+      <p>Waste Collection Record Management &amp; Environmental Analytics</p>
+    </div>
+    <div class="auth-card">
+      <h2>Account Sign In</h2>
+      <div id="login-error" class="alert alert-error hidden"></div>
+      <form id="form-login" novalidate>
+        <div class="form-group">
+          <label for="login-email">Email Address</label>
+          <input type="email" id="login-email" placeholder="e.g. admin@fab.org" required autocomplete="email">
+          <span class="field-error" id="err-login-email"></span>
+        </div>
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" placeholder="Enter password" required autocomplete="current-password">
+          <span class="field-error" id="err-login-password"></span>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full" id="btn-login">
+          <span class="btn-text">Sign In</span>
+          <span class="btn-loader hidden">⏳</span>
+        </button>
+      </form>
+      <p class="auth-link">Don't have an account? <a href="#" onclick="showPage('register'); return false;">Create an Account</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════ REGISTER PAGE ═══ -->
+<div id="page-register" class="page auth-page">
+  <div class="auth-container">
+    <div class="auth-logo">
+      <div class="auth-logo-icon">🌱</div>
+      <h1>Project FAB</h1>
+      <p>Waste Collection Record Management &amp; Environmental Analytics</p>
+    </div>
+    <div class="auth-card">
+      <h2>Register New Account</h2>
+      <div id="register-error" class="alert alert-error hidden"></div>
+      <div id="register-success" class="alert alert-success hidden"></div>
+      <form id="form-register" novalidate>
+        <div class="form-group">
+          <label for="reg-name">Full Name</label>
+          <input type="text" id="reg-name" placeholder="Your full name" required>
+          <span class="field-error" id="err-reg-name"></span>
+        </div>
+        <div class="form-group">
+          <label for="reg-email">Email Address</label>
+          <input type="email" id="reg-email" placeholder="you@example.com" required>
+          <span class="field-error" id="err-reg-email"></span>
+        </div>
+        <div class="form-group">
+          <label for="reg-password">Password</label>
+          <input type="password" id="reg-password" placeholder="Min 8 chars, 1 uppercase, 1 digit" required>
+          <span class="field-error" id="err-reg-password"></span>
+        </div>
+        <div class="form-group">
+          <label for="reg-confirm">Confirm Password</label>
+          <input type="password" id="reg-confirm" placeholder="Repeat password" required>
+          <span class="field-error" id="err-reg-confirm"></span>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full" id="btn-register">
+          <span class="btn-text">Create Account</span>
+          <span class="btn-loader hidden">⏳</span>
+        </button>
+      </form>
+      <p class="auth-link">Already have an account? <a href="#" onclick="showPage('login'); return false;">Back to Sign In</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ APP SHELL ═══ -->
+<div id="page-app" class="page app-layout">
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <span class="sidebar-logo">🌱</span>
+      <div>
+        <div class="sidebar-title">Project FAB</div>
+        <div class="sidebar-subtitle">Waste Management</div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active" data-module="dashboard" onclick="switchModule('dashboard',this); return false;">
+        <span class="nav-icon">📊</span> Dashboard
+      </a>
+      <a href="#" class="nav-item" data-module="areas" onclick="switchModule('areas',this); return false;">
+        <span class="nav-icon">🏘️</span> Residential Areas
+      </a>
+      <a href="#" class="nav-item" data-module="vehicles" onclick="switchModule('vehicles',this); return false;">
+        <span class="nav-icon">🚛</span> Vehicles
+      </a>
+      <a href="#" class="nav-item" data-module="collections" onclick="switchModule('collections',this); return false;">
+        <span class="nav-icon">♻️</span> Collection Records
+      </a>
+      <a href="#" class="nav-item" data-module="reports" onclick="switchModule('reports',this); return false;">
+        <span class="nav-icon">📋</span> Reports
+      </a>
+      <a href="#" class="nav-item" data-module="analysis" onclick="switchModule('analysis',this); return false;">
+        <span class="nav-icon">🔬</span> Data Analysis
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <span class="user-avatar">👤</span>
+        <span id="sidebar-user-name">User</span>
+      </div>
+      <button class="btn btn-outline btn-sm btn-full" onclick="logout()">Logout</button>
+    </div>
+  </aside>
+
+  <!-- Main Viewport Content -->
+  <main class="main-content">
+    <!-- Mobile Navigation Topbar -->
+    <div class="main-topbar">
+      <div style="display:flex; align-items:center; gap:0.5rem; font-weight:700;">
+        <span>🌱</span> Project FAB
+      </div>
+      <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <!-- MODULE 1: DASHBOARD -->
+    <div class="module" id="module-dashboard">
+      <div class="module-header">
+        <h1 class="module-title">📊 Operational Dashboard</h1>
+        <button class="btn btn-outline btn-sm" onclick="loadDashboard()">🔄 Refresh</button>
+      </div>
+      <div id="dashboard-content">
+        <div class="loading-state">Loading dashboard data…</div>
+      </div>
+    </div>
+
+    <!-- MODULE 2: RESIDENTIAL AREAS -->
+    <div class="module hidden" id="module-areas">
+      <div class="module-header">
+        <h1 class="module-title">🏘️ Residential Area Management</h1>
+        <button class="btn btn-primary" onclick="showAreaForm()">+ Add New Area</button>
+      </div>
+      <div class="filter-bar">
+        <input type="text" id="area-search" placeholder="Search areas by ID, name or location…" oninput="searchAreas(this.value)" class="search-input">
+      </div>
+      <div id="area-form-container" class="card form-card hidden">
+        <h3 id="area-form-title">Add Residential Area</h3>
+        <form id="form-area" novalidate style="margin-top:1rem;">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Area ID *</label>
+              <input type="text" id="f-area-id" placeholder="e.g. AREA006" required>
+              <span class="field-error" id="err-f-area-id"></span>
+            </div>
+            <div class="form-group">
+              <label>Area Name *</label>
+              <input type="text" id="f-area-name" placeholder="e.g. Lake View Colony" required>
+              <span class="field-error" id="err-f-area-name"></span>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Location *</label>
+              <input type="text" id="f-area-location" placeholder="e.g. North Sector, Zone E" required>
+              <span class="field-error" id="err-f-area-location"></span>
+            </div>
+            <div class="form-group">
+              <label>Population *</label>
+              <input type="number" id="f-area-population" placeholder="e.g. 10000" min="1" required>
+              <span class="field-error" id="err-f-area-population"></span>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary" id="btn-area-submit">Save Area</button>
+            <button type="button" class="btn btn-outline" onclick="hideAreaForm()">Cancel</button>
+          </div>
+        </form>
+      </div>
+      <div id="areas-table-container"><div class="loading-state">Loading areas…</div></div>
+    </div>
+
+    <!-- MODULE 3: VEHICLES -->
+    <div class="module hidden" id="module-vehicles">
+      <div class="module-header">
+        <h1 class="module-title">🚛 Waste Collection Fleet Vehicles</h1>
+        <button class="btn btn-primary" onclick="showVehicleForm()">+ Add New Vehicle</button>
+      </div>
+      <div class="filter-bar">
+        <input type="text" id="vehicle-search" placeholder="Search vehicles by ID or type…" oninput="searchVehicles(this.value)" class="search-input">
+      </div>
+      <div id="vehicle-form-container" class="card form-card hidden">
+        <h3 id="vehicle-form-title">Add Fleet Vehicle</h3>
+        <form id="form-vehicle" novalidate style="margin-top:1rem;">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Vehicle ID *</label>
+              <input type="text" id="f-veh-id" placeholder="e.g. VEH006" required>
+              <span class="field-error" id="err-f-veh-id"></span>
+            </div>
+            <div class="form-group">
+              <label>Vehicle Type *</label>
+              <input type="text" id="f-veh-type" placeholder="e.g. Compactor Truck" required>
+              <span class="field-error" id="err-f-veh-type"></span>
+            </div>
+            <div class="form-group">
+              <label>Capacity (kg) *</label>
+              <input type="number" id="f-veh-capacity" placeholder="e.g. 5000" min="1" step="0.01" required>
+              <span class="field-error" id="err-f-veh-capacity"></span>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary" id="btn-veh-submit">Save Vehicle</button>
+            <button type="button" class="btn btn-outline" onclick="hideVehicleForm()">Cancel</button>
+          </div>
+        </form>
+      </div>
+      <div id="vehicles-table-container"><div class="loading-state">Loading vehicles…</div></div>
+    </div>
+
+    <!-- MODULE 4: COLLECTION RECORDS -->
+    <div class="module hidden" id="module-collections">
+      <div class="module-header">
+        <h1 class="module-title">♻️ Waste Collection Records</h1>
+        <div style="display:flex; gap:0.5rem;">
+          <button class="btn btn-outline btn-sm" onclick="loadCollections()">🔄 Refresh</button>
+          <button class="btn btn-primary" onclick="showCollectionForm()">+ New Activity</button>
+        </div>
+      </div>
+      <div class="filter-bar">
+        <select id="col-filter-area" onchange="loadCollections()" class="filter-select">
+          <option value="">All Residential Areas</option>
+        </select>
+        <select id="col-filter-vehicle" onchange="loadCollections()" class="filter-select">
+          <option value="">All Fleet Vehicles</option>
+        </select>
+        <select id="col-filter-status" onchange="loadCollections()" class="filter-select">
+          <option value="">All Statuses</option>
+          <option value="Scheduled">Scheduled</option>
+          <option value="In Progress">In Progress</option>
+          <option value="Completed">Completed</option>
+          <option value="Cancelled">Cancelled</option>
+        </select>
+        <input type="date" id="col-filter-from" onchange="loadCollections()" class="filter-date" title="Filter From Date">
+        <input type="date" id="col-filter-to" onchange="loadCollections()" class="filter-date" title="Filter To Date">
+        <button class="btn btn-outline btn-sm" onclick="clearCollectionFilters()">Clear Filters</button>
+      </div>
+      <div id="collection-form-container" class="card form-card hidden">
+        <h3 id="collection-form-title">New Collection Activity</h3>
+        <form id="form-collection" novalidate style="margin-top:1rem;">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Collection ID *</label>
+              <input type="text" id="f-col-id" placeholder="e.g. COL016" required>
+              <span class="field-error" id="err-f-col-id"></span>
+            </div>
+            <div class="form-group">
+              <label>Residential Area *</label>
+              <select id="f-col-area" required onchange="checkVehicleCapacity()">
+                <option value="">— Select Area —</option>
+              </select>
+              <span class="field-error" id="err-f-col-area"></span>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Vehicle *</label>
+              <select id="f-col-vehicle" required onchange="onVehicleChange()">
+                <option value="">— Select Vehicle —</option>
+              </select>
+              <span class="field-error" id="err-f-col-vehicle"></span>
+            </div>
+            <div class="form-group">
+              <label>Collection Date *</label>
+              <input type="date" id="f-col-date" required>
+              <span class="field-error" id="err-f-col-date"></span>
+            </div>
+            <div class="form-group">
+              <label>Status *</label>
+              <select id="f-col-status" required>
+                <option value="Scheduled">Scheduled</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Completed">Completed</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="waste-section">
+            <h4>Itemized Waste Category Quantities</h4>
+            <div id="vehicle-capacity-info" class="capacity-info hidden"></div>
+            <div class="waste-inputs">
+              <div class="form-group">
+                <label>Biodegradable (kg)</label>
+                <input type="number" id="f-bio" placeholder="0" min="0" step="0.01" oninput="checkVehicleCapacity()">
+              </div>
+              <div class="form-group">
+                <label>Recyclable (kg)</label>
+                <input type="number" id="f-rec" placeholder="0" min="0" step="0.01" oninput="checkVehicleCapacity()">
+              </div>
+              <div class="form-group">
+                <label>Non-recyclable (kg)</label>
+                <input type="number" id="f-nonrec" placeholder="0" min="0" step="0.01" oninput="checkVehicleCapacity()">
+              </div>
+            </div>
+            <div id="capacity-warning" class="alert alert-error hidden" style="margin-top:0.75rem;"></div>
+            <div id="total-waste-display" class="total-display hidden"></div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary" id="btn-col-submit">Save Collection Activity</button>
+            <button type="button" class="btn btn-outline" onclick="hideCollectionForm()">Cancel</button>
+          </div>
+        </form>
+      </div>
+      <div id="collections-table-container"><div class="loading-state">Loading records…</div></div>
+    </div>
+
+    <!-- MODULE 5: REPORTS -->
+    <div class="module hidden" id="module-reports">
+      <div class="module-header">
+        <h1 class="module-title">📋 Collection Reports &amp; Aggregates</h1>
+      </div>
+      <div class="report-tabs">
+        <button class="tab-btn active" onclick="switchReportTab('area',this)">Area-wise Waste</button>
+        <button class="tab-btn" onclick="switchReportTab('vehicle',this)">Vehicle Utilization</button>
+        <button class="tab-btn" onclick="switchReportTab('completion',this)">Completion Status</button>
+        <button class="tab-btn" onclick="switchReportTab('datewise',this)">Date-wise Trends</button>
+      </div>
+
+      <!-- Report Tab 1: Area Report -->
+      <div id="report-area" class="report-panel">
+        <div class="card">
+          <div class="report-actions">
+            <button class="btn btn-primary btn-sm" onclick="loadAreaReport()">🔄 Refresh Area Report</button>
+          </div>
+          <div id="area-report-content"><div class="loading-state">Loading area report…</div></div>
+        </div>
+      </div>
+
+      <!-- Report Tab 2: Vehicle Utilization Report -->
+      <div id="report-vehicle" class="report-panel hidden">
+        <div class="card">
+          <div class="report-actions">
+            <button class="btn btn-primary btn-sm" onclick="loadVehicleReport()">🔄 Refresh Vehicle Report</button>
+          </div>
+          <div id="vehicle-report-content"><div class="empty-state">Click Refresh to load vehicle utilization data.</div></div>
+        </div>
+      </div>
+
+      <!-- Report Tab 3: Completion Report -->
+      <div id="report-completion" class="report-panel hidden">
+        <div class="card">
+          <div class="report-filters">
+            <select id="comp-filter-area" class="filter-select"><option value="">All Residential Areas</option></select>
+            <select id="comp-filter-vehicle" class="filter-select"><option value="">All Fleet Vehicles</option></select>
+            <input type="date" id="comp-from" class="filter-date" title="From Date">
+            <input type="date" id="comp-to" class="filter-date" title="To Date">
+            <button class="btn btn-primary btn-sm" onclick="loadCompletionReport()">Filter Report</button>
+            <button class="btn btn-outline btn-sm" onclick="clearCompletionFilters()">Clear</button>
+          </div>
+          <div id="completion-report-content"><div class="empty-state">Click Filter Report to view completion stats.</div></div>
+        </div>
+      </div>
+
+      <!-- Report Tab 4: Date-wise Report -->
+      <div id="report-datewise" class="report-panel hidden">
+        <div class="card">
+          <div class="report-filters">
+            <select id="dw-period" class="filter-select">
+              <option value="daily">Daily Aggregation</option>
+              <option value="weekly">Weekly Aggregation</option>
+              <option value="monthly" selected>Monthly Aggregation</option>
+            </select>
+            <input type="date" id="dw-from" class="filter-date" title="From Date">
+            <input type="date" id="dw-to" class="filter-date" title="To Date">
+            <button class="btn btn-primary btn-sm" onclick="loadDateWiseReport()">Filter Report</button>
+            <button class="btn btn-outline btn-sm" onclick="clearDateWiseFilters()">Clear</button>
+          </div>
+          <div id="datewise-report-content"><div class="empty-state">Click Filter Report to view date-wise records.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODULE 6: DATA ANALYSIS -->
+    <div class="module hidden" id="module-analysis">
+      <div class="module-header">
+        <h1 class="module-title">🔬 Environmental Data Analysis (Python Engine)</h1>
+        <button class="btn btn-primary" onclick="runAnalysis()">▶ Run Live Python Analysis</button>
+      </div>
+      <div id="analysis-status" class="alert alert-info hidden">
+        <span>⏳</span> Running Python analysis pipeline... retrieving records, cleaning data, calculating statistics, and generating charts.
+      </div>
+      <div id="analysis-content">
+        <div class="card empty-state">
+          <p>Click <strong>Run Live Python Analysis</strong> to load records from MySQL into Pandas DataFrames, execute descriptive statistics, and generate Matplotlib visualizations.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Modal: Confirm Delete -->
+<div id="modal-confirm" class="modal-backdrop hidden">
+  <div class="modal">
+    <h3 id="modal-title">Confirm Deletion</h3>
+    <p id="modal-message">Are you sure you want to delete this record? This action cannot be undone.</p>
+    <div class="modal-actions">
+      <button class="btn btn-danger" id="modal-confirm-btn">Delete Record</button>
+      <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script src="/js/api.js"></script>
+<script src="/js/app.js"></script>
+</body>
+</html>

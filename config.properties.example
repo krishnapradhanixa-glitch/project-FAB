@@ -1,0 +1,7 @@
+db.url=jdbc:mariadb://127.0.0.1:3306/projectfab
+db.user=root
+db.password=YOUR_DB_PASSWORD
+db.driver=org.mariadb.jdbc.Driver
+server.port=8080
+charts.output.dir=web/charts
+python.script=python/analyze.py
